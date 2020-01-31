@@ -13,13 +13,19 @@ namespace ConsoleAdventure.Project.Controllers
     //NOTE Makes sure everything is called to finish Setup and Starts the Game loop
     public void Run()
     {
+      System.Console.WriteLine("What is your name?");
+      string playerName = Console.ReadLine();
+      System.Console.WriteLine($"Welcome to the game, {playerName}. ");
+      _gameService.PrintIntro();
+
       // looping game
-      //   while (_playing)
-      //   {
-      //     PrintMessages();
-      //   }
-      //   Console.Clear();
-      //   System.Console.WriteLine("End of Game");
+      while (_playing)
+      {
+        PrintMessages();
+        GetUserInput();
+      }
+      Console.Clear();
+      System.Console.WriteLine("End of Game");
     }
 
     //NOTE Gets the user input, calls the appropriate command, and passes on the option if needed.
@@ -32,10 +38,27 @@ namespace ConsoleAdventure.Project.Controllers
       //NOTE this will take the user input and parse it into a command and option.
       //IE: take silver key => command = "take" option = "silver key"
 
+      switch (command)
+      {
+        case "y":
+        case "yes":
+          _gameService.PrintIntro2();
+          PrintMessages();
+          break;
+        case "n":
+        case "no":
+        case "q":
+        case "quit":
+          _playing = false;
+          //   _gameService.Quit();
+          break;
+        default:
+          break;
+      }
     }
 
     //NOTE this should print your messages for the game.
-    private void PrintMessages()
+    public void PrintMessages()
     {
       foreach (string message in _gameService.Messages)
       {
