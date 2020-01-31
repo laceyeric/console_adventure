@@ -9,11 +9,17 @@ namespace ConsoleAdventure.Project.Controllers
   public class GameController : IGameController
   {
     private GameService _gameService = new GameService();
-
+    private bool _playing = true;
     //NOTE Makes sure everything is called to finish Setup and Starts the Game loop
     public void Run()
     {
-
+      // looping game
+      //   while (_playing)
+      //   {
+      //     PrintMessages();
+      //   }
+      //   Console.Clear();
+      //   System.Console.WriteLine("End of Game");
     }
 
     //NOTE Gets the user input, calls the appropriate command, and passes on the option if needed.
@@ -31,9 +37,9 @@ namespace ConsoleAdventure.Project.Controllers
     //NOTE this should print your messages for the game.
     private void PrintMessages()
     {
-      foreach (message in _gameService.Messages)
+      foreach (string message in _gameService.Messages)
       {
-        message.Print();
+        System.Console.WriteLine(message);
       }
       _gameService.Messages.Clear();
     }
