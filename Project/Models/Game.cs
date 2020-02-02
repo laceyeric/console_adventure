@@ -62,6 +62,27 @@ namespace ConsoleAdventure.Project.Models
       warRoom.Exits.Add("west", courtyard);
 
       // create items
+      var silverKey = new Item("Silver Key", "A key silver in color. The guard Captain placed it while speaking of prisoners...");
+      var note = new Item("Capt Note", "A note from the guard Captain to be delivered to the gate Captain.  His penmanship is surprisingly elegant. He closed the message with 'xoxo'..?");
+      var vial = new Item("vial", "A vial of green liquid taken from a pouch in the Captain's quarters.");
+      var guardUniform = new Item("Guard Uniform", " A dull uniform made from cheap materials.  These are issued to all the standard castle guards.");
+      var hammer = new Item("Hammer", "A standard hammer of decent quality");
+      var brokenLock = new Item("Broken Lock", "A prisoner shackle lock that no longer functions");
+      var overcoat = new Item("Messenger Overcoat", "A long, heavy overcoat meant to keep the entire body warm");
+      var window = new Item("Window", "A small opening looking out to the eastern gardens");
+      var bed = new Item("Bed", "An open bed used by guards in the barracks. Of poor quality but good for a bit of shuteye between long shifts.");
+
+      // add items to rooms
+      captQuarters.Items.Add(silverKey);
+      captQuarters.Items.Add(note);
+      captQuarters.Items.Add(vial);
+      barracks.Items.Add(guardUniform);
+      barracks.Items.Add(bed);
+      dungeon.Items.Add(brokenLock);
+      guardRoom.Items.Add(hammer);
+      squireTower.Items.Add(overcoat);
+      warRoom.Items.Add(window);
+
 
     }
   }
