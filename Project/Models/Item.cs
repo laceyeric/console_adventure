@@ -7,6 +7,7 @@ namespace ConsoleAdventure.Project.Models
   {
     public string Name { get; set; }
     public string Description { get; set; }
+    public bool hasBeenUsed { get; set; } = false;
 
     public Item(string name, string desc)
     {

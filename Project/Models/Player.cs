@@ -7,11 +7,13 @@ namespace ConsoleAdventure.Project.Models
   {
     public string Name { get; set; }
     public List<Item> Inventory { get; set; }
+    public Dictionary<string, bool> Usables { get; set; }
 
     public Player(string name)
     {
       Name = name;
       Inventory = new List<Item>();
+      Usables = new Dictionary<string, bool>();
     }
   }
 }

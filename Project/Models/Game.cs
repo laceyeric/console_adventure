@@ -11,11 +11,11 @@ namespace ConsoleAdventure.Project.Models
     public void Setup()
     {
       // rooms initiated
-      var village = new Room("Village", "You race back to your village to update them on your mission");
+      var village = new PublicSpace("Village", "You race back to your village to update them on your mission");
 
-      var tunnel = new Room("Hidden Tunnel", "The dark tunnel discovered by your village leaders is tight and filthy. You have come to a grated plate on the eastern wall where light fights its way into the tunnel.  You listen for any noise within the castle, but all seems quiet.");
+      var tunnel = new PublicSpace("Hidden Tunnel", "The dark tunnel discovered by your village leaders is tight and filthy. You have come to a grated plate on the eastern wall where light fights its way into the tunnel.  You listen for any noise within the castle, but all seems quiet.");
 
-      var hallway1 = new Room("Western Hallway", "You find yourself in a small hall leading to the north and south.  There doesn't appear to be anything of interest within the hall itself. The eastern wall has a large arched opening leading into what appears to be a courtyard");
+      var hallway1 = new PublicSpace("Western Hallway", "You find yourself in a small hall leading to the north and south.  There doesn't appear to be anything of interest within the hall itself. The eastern wall has a large arched opening leading into what appears to be a courtyard");
 
       var barracks = new Room("Barracks", "You see a room with several sleeping guards. The room smells of sweaty men.  The 'bed' closest to you is empty and there are several 'guard uniform's tossed about.");
 
@@ -68,7 +68,7 @@ namespace ConsoleAdventure.Project.Models
       var silverKey = new Item("Silver Key", "A key silver in color. The guard Captain placed it while speaking of prisoners...");
       var note = new Item("Note", "A note from the guard Captain to be delivered to the gate Captain.  His penmanship is surprisingly elegant. He closed the message with 'xoxo'..?");
       var vial = new Item("Vial", "A vial of green liquid taken from a pouch in the Captain's quarters.");
-      var uniform = new Item("Guard Uniform", " A dull uniform made from cheap materials.  These are issued to all the standard castle guards.");
+      var uniform = new PlayerItem("Guard Uniform", " A dull uniform made from cheap materials.  These are issued to all the standard castle guards.");
       var hammer = new Item("Tool", "A standard hammer of decent quality");
       var brokenLock = new Item("Broken Lock", "A prisoner shackle lock that no longer functions");
       var overcoat = new Item("Overcoat", "A long, heavy overcoat meant to keep the entire body warm");
@@ -87,10 +87,17 @@ namespace ConsoleAdventure.Project.Models
       squireTower.Items.Add(overcoat);
       warRoom.Items.Add(window);
 
+      // usable changes
+      barracks.Usables.Add(uniform, "The sound of you changing didn't seem to stir any sleeping guards.  The rest of the uniforms seem worthless.  The 'bed' closest to you is empty...");
+      // how to select which to use?
+      // barracks.Usables.Add(bed, "You hear footsteps approaching the door from the hallway, so you lay in the empty cot, pull the covers up to your chin, and pretend to sleep. Guard: 'It's your turn for watch... Hey, what are you doing in here!? Quick Jenkins, seize him!' You try to scramble to feet to escape the room. Jenkins rushes you with the over-zealous energy of a new recruit and instinctively swings his sword down upon you. You crumple to the floor. The last sound ringing in your ear is of your family pendant bouncing on the cold stone floor that receives your lifeblood.");
+      barracks.Usables.Add(bed, "Fully uniformed, you lay in the empty cot near the door to better blend in.  Shortly after, footsteps approach the barracks door. Guard: 'Hey Get Up! it's your turn for watch, Go relieve Shigeru in the Guard Room.' You quickly climb out of the bed and head for the door, keeping your head down as you pass the other guards.");
+
       // player instantiation?
       Player Current = new Player("");
       CurrentPlayer = Current;
       CurrentPlayer.Inventory.Add(pendant);
+      CurrentPlayer.Usables.Add(uniform, false); //cannot be an object
 
     }
     public Game()

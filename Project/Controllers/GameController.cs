@@ -29,7 +29,6 @@ namespace ConsoleAdventure.Project.Controllers
         PrintMessages();
         GetUserInput();
       }
-      Console.Clear();
       System.Console.WriteLine("End of Game");
     }
 

@@ -9,6 +9,8 @@ namespace ConsoleAdventure.Project.Models
     public string Description { get; set; }
     public List<Item> Items { get; set; }
     public Dictionary<string, IRoom> Exits { get; set; }
+    public Dictionary<Item, string> Usables { get; set; }
+
 
     // constructor
     public Room(string name, string description)
@@ -17,6 +19,7 @@ namespace ConsoleAdventure.Project.Models
       Description = description;
       Items = new List<Item>();
       Exits = new Dictionary<string, IRoom>();
+      Usables = new Dictionary<Item, string>();
     }
   }
 

@@ -17,6 +17,7 @@ namespace ConsoleAdventure.Project.Services
       _game = new Game();
       Messages = new List<string>();
     }
+    //travel method
     public void Go(string direction)
     {
       if (_game.CurrentRoom.Exits.ContainsKey(direction))
@@ -24,6 +25,13 @@ namespace ConsoleAdventure.Project.Services
         Console.Clear();
         _game.CurrentRoom = _game.CurrentRoom.Exits[direction];
         Messages.Add($"You make your way to the {_game.CurrentRoom.Name}. ");
+        //check if player is disguised
+        if (!(_game.CurrentRoom is PublicSpace) && !_game.CurrentPlayer.Usables["Guard Uniform"])
+        {
+          //generic death message if not disguised
+          Messages.Add("A guard notices you enter the space! Guard: 'Stop right there! Intruder!!' As you turn to run, the enemy troops swarm you and end your fight.");
+          return;
+        }
         Messages.Add(_game.CurrentRoom.Description);
         return;
       }
@@ -46,14 +54,14 @@ namespace ConsoleAdventure.Project.Services
 
     public void PrintIntro2()
     {
-      Messages.Add("Chief: 'Thank you, brave one.  Truly you are our last hope. Go east to enter the hidden tunnel. Be careful and come back victorious!'");
+      Messages.Add("Chief: 'Thank you, brave one.  Truly you are our last hope. 'Go east' to enter the hidden tunnel. Be careful and come back victorious!'");
     }
     public void Help()
     {
       Messages.Add("You have the following commands available:");
       Messages.Add("Type 'go' followed by a direction (north, east, south or west) to progress to a different area. EX: 'go east'.");
-      Messages.Add("Type 'use' followed by an item name to attempt to use an item. EX: 'use towel'.");
-      Messages.Add("type 'take' followed by an item name to attempt to place it in your inventory. EX: 'take towel'.");
+      Messages.Add("Type 'use' followed by an item name to attempt to use an item. EX: 'use blue towel'.");
+      Messages.Add("type 'take' followed by an item name to attempt to place it in your inventory. EX: 'take blue towel'.");
       Messages.Add("Type 'inv' to view your player's inventory.");
       Messages.Add("Type 'look' to see the current area's description again.");
       Messages.Add("Type 'help' to see all available game commands.");
@@ -71,6 +79,11 @@ namespace ConsoleAdventure.Project.Services
     public void Look()
     {
       Messages.Add(_game.CurrentRoom.Description);
+      Messages.Add("Potentially useful things here:");
+      foreach (Item i in _game.CurrentRoom.Items)
+      {
+        Messages.Add($"{i.Name} -- {i.Description}");
+      }
     }
 
     public void Quit()
@@ -110,26 +123,91 @@ namespace ConsoleAdventure.Project.Services
     ///</summary>
     public void UseItem(string itemName)
     {
-      // is the item typed in either room or player inventory?
-      var playerItem = _game.CurrentPlayer.Inventory.Find(p => p.Name == itemName);
-      var roomItem = _game.CurrentRoom.Items.Find(i => i.Name == itemName);
-      if (itemName == "guard uniform" || itemName == "Guard Uniform")
+      var usedItem = _game.CurrentPlayer.Inventory.Find(p => p.Name.ToLower() == itemName);
+      if (usedItem == null)
       {
-        Messages.Add("You grab one of the uniforms nearby to better disguise yourself.");
+        usedItem = _game.CurrentRoom.Items.Find(i => i.Name.ToLower() == itemName);
+        if (usedItem == null)
+        {
+          //INVALID ITEM
+          return;
+        }
       }
 
-      // handle non matches of either list first
-      // if (playerItem.Name.ToLower() != itemName || roomItem.Name.ToLower() != itemName)
-      // {
-      // Messages.Add($"Could not find an item to use called {itemName}.");
-      // }
-      // else if (itemName == playerItem.Name.ToLower())
-      // {
-      //   switch (playerItem)
-      //   {
+      if (usedItem is PlayerItem)
+      {
+        if (_game.CurrentPlayer.Usables.ContainsKey(usedItem.Name))
+        {
+          //YOU PUT ON THE >>>>>>>>>
+          _game.CurrentPlayer.Usables[usedItem.Name] = true;
+          return;
+        }
+      }
 
-      //   }
-      // }
+      //check room for usables
+
+
+      //NO USE
+
+
+
+
+
+
+
+
+      // is the item typed in either room or player inventory?
+      var playerItem = _game.CurrentPlayer.Inventory.Find(p => p.Name.ToLower() == itemName);
+      var roomItem = _game.CurrentRoom.Items.Find(i => i.Name.ToLower() == itemName);
+      if (itemName == playerItem.Name.ToLower())
+      {
+        // for (int i = 0; i < _game.CurrentPlayer.Inventory.Count; i++)
+        // {
+        //   var item = _game.CurrentPlayer.Inventory[i];
+        if (_game.CurrentRoom.Usables.ContainsKey(playerItem))
+        {
+          _game.CurrentRoom.Description = _game.CurrentRoom.Usables[playerItem];
+          playerItem.hasBeenUsed = true;
+          Messages.Add($"You have used the {playerItem.Name}");
+          Messages.Add(_game.CurrentRoom.Description);
+        }
+        else
+        {
+          Messages.Add($"Could not find an item to use called {itemName}.");
+        }
+      }
+      else if (itemName == roomItem.Name.ToLower())
+      {
+        if (_game.CurrentRoom.Usables.ContainsKey(roomItem))
+        {
+          _game.CurrentRoom.Description = _game.CurrentRoom.Usables[roomItem];
+          roomItem.hasBeenUsed = true;
+          Messages.Add($"You have used the {roomItem.Name}");
+          Messages.Add(_game.CurrentRoom.Description);
+        }
+        else
+        {
+          Messages.Add($"Could not find an item to use called {itemName}.");
+        }
+      }
+      else
+      {
+        Messages.Add($"Could not find an item to use called {itemName}.");
+      }
     }
+
+
+    // handle non matches of either list first
+    // if (playerItem.Name.ToLower() != itemName || roomItem.Name.ToLower() != itemName)
+    // {
+    // Messages.Add($"Could not find an item to use called {itemName}.");
+    // }
+    // else if (itemName == playerItem.Name.ToLower())
+    // {
+    //   switch (playerItem)
+    //   {
+
+    //   }
+    // }
   }
 }
