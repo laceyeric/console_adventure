@@ -13,7 +13,7 @@ namespace ConsoleAdventure.Project.Models
       // rooms initiated
       var village = new Room("Village", "You race back to your village to update them on your mission");
 
-      var tunnel = new Room("Hidden Tunnel", "The dark tunnel discovered by your village leaders is tight and filthy. You have come to a grated on the eastern wall where light fights its way into the tunnel.  You listen for any noise on the opposite side, but all seems quiet.");
+      var tunnel = new Room("Hidden Tunnel", "The dark tunnel discovered by your village leaders is tight and filthy. You have come to a grated plate on the eastern wall where light fights its way into the tunnel.  You listen for any noise on the opposite side, but all seems quiet.");
 
       var hallway1 = new Room("Western Hallway", "You find yourself in a small hall stretching to the north and south.  There doesn't appear to be anything of interest here. The eastern wall has a larger arched opening leading into what appears to be a courtyard");
 
@@ -61,29 +61,41 @@ namespace ConsoleAdventure.Project.Models
       warRoom.Exits.Add("east", squireTower);
       warRoom.Exits.Add("west", courtyard);
 
+      // set beginning room
+      CurrentRoom = village;
+
       // create items
       var silverKey = new Item("Silver Key", "A key silver in color. The guard Captain placed it while speaking of prisoners...");
       var note = new Item("Capt Note", "A note from the guard Captain to be delivered to the gate Captain.  His penmanship is surprisingly elegant. He closed the message with 'xoxo'..?");
       var vial = new Item("vial", "A vial of green liquid taken from a pouch in the Captain's quarters.");
-      var guardUniform = new Item("Guard Uniform", " A dull uniform made from cheap materials.  These are issued to all the standard castle guards.");
+      var uniform = new Item("Guard Uniform", " A dull uniform made from cheap materials.  These are issued to all the standard castle guards.");
       var hammer = new Item("Hammer", "A standard hammer of decent quality");
       var brokenLock = new Item("Broken Lock", "A prisoner shackle lock that no longer functions");
       var overcoat = new Item("Messenger Overcoat", "A long, heavy overcoat meant to keep the entire body warm");
       var window = new Item("Window", "A small opening looking out to the eastern gardens");
       var bed = new Item("Bed", "An open bed used by guards in the barracks. Of poor quality but good for a bit of shuteye between long shifts.");
+      var pendant = new Item("pendant", "A family heirloom passed down from your village ancestors.");
 
       // add items to rooms
       captQuarters.Items.Add(silverKey);
       captQuarters.Items.Add(note);
       captQuarters.Items.Add(vial);
-      barracks.Items.Add(guardUniform);
+      barracks.Items.Add(uniform);
       barracks.Items.Add(bed);
       dungeon.Items.Add(brokenLock);
       guardRoom.Items.Add(hammer);
       squireTower.Items.Add(overcoat);
       warRoom.Items.Add(window);
 
+      // player instantiation?
+      Player Current = new Player("");
+      CurrentPlayer = Current;
+      CurrentPlayer.Inventory.Add(pendant);
 
+    }
+    public Game()
+    {
+      Setup();
     }
   }
 }

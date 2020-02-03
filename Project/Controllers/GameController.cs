@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using ConsoleAdventure.Project.Services;
 using ConsoleAdventure.Project.Interfaces;
 using ConsoleAdventure.Project.Models;
 
@@ -8,14 +9,18 @@ namespace ConsoleAdventure.Project.Controllers
 
   public class GameController : IGameController
   {
-    private GameService _gameService = new GameService();
+    private GameService _gameService { get; set; } = new GameService();
     private bool _playing = true;
+
     //NOTE Makes sure everything is called to finish Setup and Starts the Game loop
     public void Run()
     {
+
+
       System.Console.WriteLine("What is your name?");
       string playerName = Console.ReadLine();
       System.Console.WriteLine($"Welcome to the game, {playerName}. ");
+      _gameService.AssignPlayer(playerName);
       _gameService.PrintIntro();
 
       // looping game
@@ -49,8 +54,31 @@ namespace ConsoleAdventure.Project.Controllers
         case "no":
         case "q":
         case "quit":
+          _gameService.Quit();
+          PrintMessages();
           _playing = false;
-          //   _gameService.Quit();
+          break;
+        case "h":
+        case "help":
+          _gameService.Help();
+          PrintMessages();
+          break;
+        case "go":
+          _gameService.Go(option);
+          PrintMessages();
+          break;
+        case "look":
+          _gameService.Look();
+          PrintMessages();
+          break;
+        case "take":
+          _gameService.TakeItem(option);
+          PrintMessages();
+          break;
+        case "inv":
+        case "inventory":
+          _gameService.Inventory();
+          PrintMessages();
           break;
         default:
           break;
