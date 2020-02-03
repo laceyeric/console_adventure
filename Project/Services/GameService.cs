@@ -110,7 +110,26 @@ namespace ConsoleAdventure.Project.Services
     ///</summary>
     public void UseItem(string itemName)
     {
-      throw new System.NotImplementedException();
+      // is the item typed in either room or player inventory?
+      var playerItem = _game.CurrentPlayer.Inventory.Find(p => p.Name == itemName);
+      var roomItem = _game.CurrentRoom.Items.Find(i => i.Name == itemName);
+      if (itemName == "guard uniform" || itemName == "Guard Uniform")
+      {
+        Messages.Add("You grab one of the uniforms nearby to better disguise yourself.");
+      }
+
+      // handle non matches of either list first
+      // if (playerItem.Name.ToLower() != itemName || roomItem.Name.ToLower() != itemName)
+      // {
+      // Messages.Add($"Could not find an item to use called {itemName}.");
+      // }
+      // else if (itemName == playerItem.Name.ToLower())
+      // {
+      //   switch (playerItem)
+      //   {
+
+      //   }
+      // }
     }
   }
 }
