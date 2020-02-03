@@ -62,7 +62,6 @@ namespace ConsoleAdventure.Project.Services
 
     public void Inventory()
     {
-      Console.WriteLine(_game.CurrentPlayer.Inventory);
       foreach (Item i in _game.CurrentPlayer.Inventory)
       {
         Messages.Add($"{i.Name} -- {i.Description}");
@@ -94,7 +93,15 @@ namespace ConsoleAdventure.Project.Services
     ///<summary>When taking an item be sure the item is in the current room before adding it to the player inventory, Also don't forget to remove the item from the room it was picked up in</summary>
     public void TakeItem(string itemName)
     {
-
+      var grabbedItem = _game.CurrentRoom.Items.Find(i => i.Name.ToLower() == itemName);
+      if (_game.CurrentRoom.Items.Contains(grabbedItem))
+      {
+        _game.CurrentPlayer.Inventory.Add(grabbedItem);
+        _game.CurrentRoom.Items.RemoveAll(i => i.Name.ToLower() == grabbedItem.Name.ToLower());
+        Messages.Add($"You have successfully taken the {grabbedItem.Name}.");
+        return;
+      }
+      Messages.Add($"Failed to find anything useful called {itemName}.");
     }
     ///<summary>
     ///No need to Pass a room since Items can only be used in the CurrentRoom

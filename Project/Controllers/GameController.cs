@@ -75,6 +75,10 @@ namespace ConsoleAdventure.Project.Controllers
           _gameService.TakeItem(option);
           PrintMessages();
           break;
+        case "use":
+          _gameService.UseItem(option);
+          PrintMessages();
+          break;
         case "inv":
         case "inventory":
           _gameService.Inventory();
