@@ -88,3 +88,21 @@ Connecting room to room is pretty straight forward, however taking and using ite
 
 ### Finished?
 When You are finished please submit the url for your github repo to the gradebook.
+
+2/3/20- current Cheat layout
+enter name
+Y/yes
+go east
+go east
+go north
+use guard uniform
+go south
+go south
+take vial
+take silver key
+go east
+go north
+use silver key
+go east
+use vial
+use window
