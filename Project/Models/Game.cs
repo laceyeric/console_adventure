@@ -17,21 +17,21 @@ namespace ConsoleAdventure.Project.Models
 
       var hallway1 = new PublicSpace("Western Hallway", "You find yourself in a small hall leading to the north and south.  There doesn't appear to be anything of interest within the hall itself. The eastern wall has a large arched opening leading into what appears to be a courtyard");
 
-      var barracks = new Room("Barracks", "You see a room with several sleeping guards. The room smells of sweaty men.  The 'bed' closest to you is empty and there are several 'guard uniform's tossed about.");
+      var barracks = new PublicSpace("Barracks", "You see a room with several sleeping guards. The room smells of sweaty men.  The 'bed' closest to you is empty and there are several 'guard uniform's tossed about.");
 
-      var captQuarters = new Room("Captain's Quarters", "As you approach the Captain's quarters you swallow hard and notice your lips are dry.  Stepping into the room you see a few small tables and maps of the countryside sprawled out upon them.");
+      var captQuarters = new Room("Captain's Quarters", "As you approach the Captain's quarters you swallow hard and notice your lips are dry.  Stepping into the room you see a few small tables and maps of the countryside sprawled out upon them. A soldier, presumably the Captain stops pacing the far wall and sizes you up upon entry. Captain: 'A new recruit, huh? I'd send you to the guard room where I didn't think you could screw anything up, but apparently we have special guests coming in this late hour' He slams a key down onto the table, crinkling maps and flattening a scroll. Captain: 'I want this night to stay quiet and simple...the last thing I need is to clean up any mistakes!'  He pens a quick 'note' and tosses it on the table in front of you. Captain: 'Go fetch a messenger squire for me and have him take this note to the Gate Captain immediately.  I'll rouse the other guards to secure their welcome once within.'  With that, he grabbed his coat and took two lumbering strides out the door.  A quick survey of the room lets you see not only has he left a 'silver key' on the table beside the 'note', but some interesting vials of liquid fill a pouch along the back wall where he was pacing.");
 
       var courtyard = new Room("Castle Courtyard", "You step into the large courtyard located in the middle of the castle grounds.  At its center is a flowing fountain casting moonlight in all directions.  A few guards patrol the area.");
 
       var guardRoom = new Room("Guard Room", "Pushing open the door of the guard room, you look around and observe that it is empty.  There are a few small 'tool's in the corner and a chair propped against the wall near a stairwell that likely leads to the dungeon.");
 
-      var hallway2 = new Room("Southern Hallway", "You find yourself in a small hall stretching toward entrances at the east and west ends.  There doesn't appear to be anything of interest within the hallway itself. The northern wall has a large arched opening leading into what appears to be a courtyard");
+      var hallway2 = new PublicSpace("Southern Hallway", "You find yourself in a small hall stretching toward entrances at the east and west ends.  There doesn't appear to be anything of interest within the hallway itself. The northern wall has a large arched opening leading into what appears to be a courtyard");
 
       var dungeon = new Room("Dungeon", "As you descend the stairs to the dungeon you notice a harsh chill to the air.  Landing at the base of the stairs you see the remains of a prisoner that will never find freedom.");
 
       var squireTower = new Room("Squire's Tower", "As you finish climbing the stairs to the squire tower you see a messenger nestled in his bed. His messenger 'overcoat' is hanging from his bed post.");
 
-      var warRoom = new Room("War Room", "Stepping into the war room you see several maps strewn across a large central table by the cool night breeze coming through a nearby 'window'. On the maps many of the villages have been marked for purification.  You also notice on one side of the table several dishes of prepared food have been set out. Perhaps the war council will be meeting soon...");
+      var warRoom = new LockedRoom("War Room", "A large ornate door stands tightly shut with a silver lion's head below the handle. Within its mouth, a keyhole.");
 
       var throneRoom = new Room("Throne Room", "As you unlock the door and swing it wide you see an enormous hall stretching out before you. At the opposite end of the hall sitting on his throne you see the Dark Lord.  The Dark Lord shouts at you demanding why you dared to interrupt him during his Ritual of Evil Summoning... Dumbfounded, you mutter an incoherent response. Becoming more enraged the Dark Lord complains that you just ruined his concentration and he will now have to start the ritual over.  Quickly striding towards you he smirks at you.  'At least I know I have a sacrificial volunteer.' he whispers to you, plunging his jewel encrusted dagger into your heart as your world slowly fades away...");
 
@@ -92,12 +92,13 @@ namespace ConsoleAdventure.Project.Models
       // how to select which to use?
       // barracks.Usables.Add(bed, "You hear footsteps approaching the door from the hallway, so you lay in the empty cot, pull the covers up to your chin, and pretend to sleep. Guard: 'It's your turn for watch... Hey, what are you doing in here!? Quick Jenkins, seize him!' You try to scramble to feet to escape the room. Jenkins rushes you with the over-zealous energy of a new recruit and instinctively swings his sword down upon you. You crumple to the floor. The last sound ringing in your ear is of your family pendant bouncing on the cold stone floor that receives your lifeblood.");
       barracks.Usables.Add(bed, "Fully uniformed, you lay in the empty cot near the door to better blend in.  Shortly after, footsteps approach the barracks door. Guard: 'Hey Get Up! it's your turn for watch, Go relieve Shigeru in the Guard Room.' You quickly climb out of the bed and head for the door, keeping your head down as you pass the other guards.");
+      courtyard.Usables.Add(silverKey, "Stepping into the war room you see several maps strewn across a large central table by the cool night breeze coming through a nearby 'window'. On the maps many of the villages have been marked for purification.  You also notice on one side of the table several dishes of prepared food have been set out. Perhaps the war council will be meeting soon...A narrow stair on the eastern wall winds up to the squire quarters.");
 
       // player instantiation?
       Player Current = new Player("");
       CurrentPlayer = Current;
       CurrentPlayer.Inventory.Add(pendant);
-      CurrentPlayer.Usables.Add(uniform, false); //cannot be an object
+      CurrentPlayer.Usables.Add(uniform.Name, false); //cannot be an object
 
     }
     public Game()

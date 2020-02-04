@@ -20,8 +20,14 @@ namespace ConsoleAdventure.Project.Services
     //travel method
     public void Go(string direction)
     {
+      //check does room have an exit in given direction from user input
       if (_game.CurrentRoom.Exits.ContainsKey(direction))
       {
+        if (_game.CurrentRoom.Exits[direction].IsLocked)
+        {
+          Messages.Add($"You approach the {_game.CurrentRoom.Exits[direction].Name}. {_game.CurrentRoom.Exits[direction].Description}");
+          return;
+        }
         Console.Clear();
         _game.CurrentRoom = _game.CurrentRoom.Exits[direction];
         Messages.Add($"You make your way to the {_game.CurrentRoom.Name}. ");
@@ -33,8 +39,8 @@ namespace ConsoleAdventure.Project.Services
           return;
         }
         Messages.Add(_game.CurrentRoom.Description);
-        return;
       }
+
       Messages.Add("There doesn't seem to be anything in that direction.");
       return;
     }
@@ -123,16 +129,21 @@ namespace ConsoleAdventure.Project.Services
     ///</summary>
     public void UseItem(string itemName)
     {
+
       var usedItem = _game.CurrentPlayer.Inventory.Find(p => p.Name.ToLower() == itemName);
       if (usedItem == null)
       {
         usedItem = _game.CurrentRoom.Items.Find(i => i.Name.ToLower() == itemName);
-        if (usedItem == null)
-        {
-          //INVALID ITEM
-          return;
-        }
       }
+      if (usedItem == null)
+      {
+        Messages.Add($"Could not find a useful item called {itemName}.");
+        return;
+      }
+
+      // if(usedItem.Name == "Uniform"){
+      //   _game.CurrentPlayer.WearingUniform = !_game
+      // }
 
       if (usedItem is PlayerItem)
       {

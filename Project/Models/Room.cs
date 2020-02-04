@@ -10,6 +10,8 @@ namespace ConsoleAdventure.Project.Models
     public List<Item> Items { get; set; }
     public Dictionary<string, IRoom> Exits { get; set; }
     public Dictionary<Item, string> Usables { get; set; }
+    public bool IsLocked { get; set; }
+
 
 
     // constructor

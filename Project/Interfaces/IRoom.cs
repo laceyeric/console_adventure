@@ -10,6 +10,6 @@ namespace ConsoleAdventure.Project.Interfaces
     List<Item> Items { get; set; }
     Dictionary<string, IRoom> Exits { get; set; }
     Dictionary<Item, string> Usables { get; set; }
-
+    bool IsLocked { get; set; }
   }
 }

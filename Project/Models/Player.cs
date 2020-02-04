@@ -8,6 +8,7 @@ namespace ConsoleAdventure.Project.Models
     public string Name { get; set; }
     public List<Item> Inventory { get; set; }
     public Dictionary<string, bool> Usables { get; set; }
+    public bool WearingUniform { get; set; } = false;
 
     public Player(string name)
     {

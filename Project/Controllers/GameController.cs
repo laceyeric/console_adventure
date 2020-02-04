@@ -47,45 +47,38 @@ namespace ConsoleAdventure.Project.Controllers
         case "y":
         case "yes":
           _gameService.PrintIntro2();
-          PrintMessages();
           break;
         case "n":
         case "no":
         case "q":
         case "quit":
           _gameService.Quit();
-          PrintMessages();
           _playing = false;
           break;
         case "h":
         case "help":
           _gameService.Help();
-          PrintMessages();
           break;
         case "go":
           _gameService.Go(option);
-          PrintMessages();
           break;
         case "look":
           _gameService.Look();
-          PrintMessages();
           break;
         case "take":
           _gameService.TakeItem(option);
-          PrintMessages();
           break;
         case "use":
           _gameService.UseItem(option);
-          PrintMessages();
           break;
         case "inv":
         case "inventory":
           _gameService.Inventory();
-          PrintMessages();
           break;
         default:
           break;
       }
+      PrintMessages();
     }
 
     //NOTE this should print your messages for the game.
