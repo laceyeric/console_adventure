@@ -45,7 +45,13 @@ namespace ConsoleAdventure.Project.Services
         {
           //generic death message if not disguised
           Messages.Add("A guard notices you enter the space! Guard: 'Stop right there! Intruder!!' As you turn to run, the enemy troops swarm you and end your fight.");
+          Death();
           return;
+        }
+        if (_game.CurrentRoom.Name.ToLower() == "throne room")
+        {
+          Messages.Add(_game.CurrentRoom.Description);
+          Death();
         }
         Messages.Add(_game.CurrentRoom.Description);
         return;
@@ -170,7 +176,7 @@ namespace ConsoleAdventure.Project.Services
       {
         Messages.Add("You hear footsteps approaching the door from the hallway, so you lay in the empty cot, pull the covers up to your chin, and pretend to sleep. Guard: 'It's your turn for watch... Hey, what are you doing in here!? Quick Jenkins, seize him!' You try to scramble to feet to escape the room. Jenkins rushes you with the over-zealous energy of a new recruit and instinctively swings his sword down upon you. You crumple to the floor. The last sound ringing in your ear is of your family pendant bouncing on the cold stone floor that receives your lifeblood.");
         Messages.Add("You have lost the game. Your village will surely be slaughtered by dawn for your attempted treachery.");
-        Quit(); //need to flip _playing bool in controller somehow
+        Death();
         return;
       }
       // silver key
