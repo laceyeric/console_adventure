@@ -10,7 +10,7 @@ namespace ConsoleAdventure.Project.Controllers
   public class GameController : IGameController
   {
     private GameService _gameService { get; set; } = new GameService();
-    private bool _playing = true;
+    bool _playing = true;
 
     //NOTE Makes sure everything is called to finish Setup and Starts the Game loop
     public void Run()
@@ -19,12 +19,13 @@ namespace ConsoleAdventure.Project.Controllers
 
       System.Console.WriteLine("What is your name?");
       string playerName = Console.ReadLine();
+      Console.Clear();
       System.Console.WriteLine($"Welcome to the game, {playerName}. ");
       _gameService.AssignPlayer(playerName);
       _gameService.PrintIntro();
 
       // looping game
-      while (_playing)
+      while (_gameService.Playing)
       {
         PrintMessages();
         GetUserInput();
@@ -52,8 +53,8 @@ namespace ConsoleAdventure.Project.Controllers
         case "no":
         case "q":
         case "quit":
-          _gameService.Quit();
-          _playing = false;
+          System.Console.WriteLine("Coward, you bring dishonor and death to us all!");
+          System.Environment.Exit(0);
           break;
         case "h":
         case "help":
@@ -74,6 +75,9 @@ namespace ConsoleAdventure.Project.Controllers
         case "inv":
         case "inventory":
           _gameService.Inventory();
+          break;
+        case "reset":
+          _gameService.Reset();
           break;
         default:
           break;

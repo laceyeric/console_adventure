@@ -9,12 +9,21 @@ namespace ConsoleAdventure.Project.Services
   public class GameService : IGameService
   {
     private IGame _game { get; set; }
+    public bool Playing
+    {
+      get
+      {
+        return _game.Playing;
+      }
+      set { }
+    }
 
     public List<string> Messages { get; set; }
 
     public GameService()
     {
       _game = new Game();
+      _game.Playing = true;
       Messages = new List<string>();
     }
     //travel method
@@ -32,15 +41,15 @@ namespace ConsoleAdventure.Project.Services
         _game.CurrentRoom = _game.CurrentRoom.Exits[direction];
         Messages.Add($"You make your way to the {_game.CurrentRoom.Name}. ");
         //check if player is disguised
-        if (!(_game.CurrentRoom is PublicSpace) && !_game.CurrentPlayer.Usables["Guard Uniform"])
+        if (!(_game.CurrentRoom is PublicSpace) && !_game.CurrentPlayer.WearingUniform)
         {
           //generic death message if not disguised
           Messages.Add("A guard notices you enter the space! Guard: 'Stop right there! Intruder!!' As you turn to run, the enemy troops swarm you and end your fight.");
           return;
         }
         Messages.Add(_game.CurrentRoom.Description);
+        return;
       }
-
       Messages.Add("There doesn't seem to be anything in that direction.");
       return;
     }
@@ -94,7 +103,11 @@ namespace ConsoleAdventure.Project.Services
 
     public void Quit()
     {
-      Messages.Add("You have chosen to give up your quest.");
+    }
+    public void Death()
+    {
+      Messages.Add("You have died.");
+      _game.Playing = false;
     }
 
     ///<summary>
@@ -102,7 +115,8 @@ namespace ConsoleAdventure.Project.Services
     ///</summary>
     public void Reset()
     {
-      throw new System.NotImplementedException();
+      Messages.Add("Let's try again!");
+      _game.Playing = false;
     }
 
     public void Setup(string playerName)
@@ -140,85 +154,76 @@ namespace ConsoleAdventure.Project.Services
         Messages.Add($"Could not find a useful item called {itemName}.");
         return;
       }
-
-      // if(usedItem.Name == "Uniform"){
-      //   _game.CurrentPlayer.WearingUniform = !_game
-      // }
-
-      if (usedItem is PlayerItem)
+      //unique environment changes for particular items
+      //uniform
+      if (usedItem.Name.ToLower() == "guard uniform")
       {
-        if (_game.CurrentPlayer.Usables.ContainsKey(usedItem.Name))
+        _game.CurrentPlayer.WearingUniform = !_game.CurrentPlayer.WearingUniform;
+        if (_game.CurrentPlayer.WearingUniform == false)
         {
-          //YOU PUT ON THE >>>>>>>>>
-          _game.CurrentPlayer.Usables[usedItem.Name] = true;
-          return;
+          Messages.Add($"Having taken off the uniform, you are no longer disguised!");
         }
+        Messages.Add($"Wearing the found uniform, you are now disguised as a local guard");
       }
+      // bed
+      if (usedItem.Name.ToLower() == "bed" && _game.CurrentPlayer.WearingUniform == false)
+      {
+        Messages.Add("You hear footsteps approaching the door from the hallway, so you lay in the empty cot, pull the covers up to your chin, and pretend to sleep. Guard: 'It's your turn for watch... Hey, what are you doing in here!? Quick Jenkins, seize him!' You try to scramble to feet to escape the room. Jenkins rushes you with the over-zealous energy of a new recruit and instinctively swings his sword down upon you. You crumple to the floor. The last sound ringing in your ear is of your family pendant bouncing on the cold stone floor that receives your lifeblood.");
+        Messages.Add("You have lost the game. Your village will surely be slaughtered by dawn for your attempted treachery.");
+        Quit(); //need to flip _playing bool in controller somehow
+        return;
+      }
+      // silver key
+      if (usedItem.Name.ToLower() == "silver key" && _game.CurrentRoom.Name.ToLower() == "castle courtyard" && !usedItem.hasBeenUsed)
+      {
+        Messages.Add($"You've used the silver key and unlocked the door to the War Room.");
+        _game.CurrentRoom = _game.CurrentRoom.Exits["east"];
+        System.Console.WriteLine(_game.CurrentRoom.Name);
+        _game.CurrentRoom.IsLocked = !_game.CurrentRoom.IsLocked;
+        usedItem.hasBeenUsed = true;
+        _game.CurrentRoom.Description = _game.CurrentRoom.Usables[usedItem];
+        Messages.Add(_game.CurrentRoom.Description);
+        return;
+      }
+      // vial
+      if (usedItem.Name.ToLower() == "vial" && _game.CurrentRoom.Name.ToLower() == "war room" && !usedItem.hasBeenUsed)
+      {
+        usedItem.hasBeenUsed = true;
+        _game.CurrentRoom.Description = _game.CurrentRoom.Usables[usedItem];
+        Messages.Add($"You have used the {usedItem.Name}");
+        Messages.Add(_game.CurrentRoom.Description);
+        Messages.Add("After discarding the evidence you begin to walk confidently toward the War Room door when you hear a clamor of footsteps and brushing cloth approaching from the other side.  You've got to get out of sight fast!");
+        return;
+      }
+      // window
+      if (usedItem.Name.ToLower() == "window" && _game.CurrentRoom.Name.ToLower() == "war room")
+      {
+        usedItem.hasBeenUsed = true;
+        _game.CurrentRoom.Description = _game.CurrentRoom.Usables[usedItem];
+        Messages.Add($"You have used the {usedItem.Name}");
+        Messages.Add(_game.CurrentRoom.Description);
+        VictoryTrigger();
+        return;
+      }
+      usedItem.hasBeenUsed = true;
+      _game.CurrentRoom.Description = _game.CurrentRoom.Usables[usedItem];
+      Messages.Add($"You have used the {usedItem.Name}");
+      Messages.Add(_game.CurrentRoom.Description);
 
       //check room for usables
-
-
       //NO USE
+      // for (int i = 0; i < _game.CurrentPlayer.Inventory.Count; i++)
+      // {
+      //   var item = _game.CurrentPlayer.Inventory[i];
 
-
-
-
-
-
-
-
-      // is the item typed in either room or player inventory?
-      var playerItem = _game.CurrentPlayer.Inventory.Find(p => p.Name.ToLower() == itemName);
-      var roomItem = _game.CurrentRoom.Items.Find(i => i.Name.ToLower() == itemName);
-      if (itemName == playerItem.Name.ToLower())
-      {
-        // for (int i = 0; i < _game.CurrentPlayer.Inventory.Count; i++)
-        // {
-        //   var item = _game.CurrentPlayer.Inventory[i];
-        if (_game.CurrentRoom.Usables.ContainsKey(playerItem))
-        {
-          _game.CurrentRoom.Description = _game.CurrentRoom.Usables[playerItem];
-          playerItem.hasBeenUsed = true;
-          Messages.Add($"You have used the {playerItem.Name}");
-          Messages.Add(_game.CurrentRoom.Description);
-        }
-        else
-        {
-          Messages.Add($"Could not find an item to use called {itemName}.");
-        }
-      }
-      else if (itemName == roomItem.Name.ToLower())
-      {
-        if (_game.CurrentRoom.Usables.ContainsKey(roomItem))
-        {
-          _game.CurrentRoom.Description = _game.CurrentRoom.Usables[roomItem];
-          roomItem.hasBeenUsed = true;
-          Messages.Add($"You have used the {roomItem.Name}");
-          Messages.Add(_game.CurrentRoom.Description);
-        }
-        else
-        {
-          Messages.Add($"Could not find an item to use called {itemName}.");
-        }
-      }
-      else
-      {
-        Messages.Add($"Could not find an item to use called {itemName}.");
-      }
     }
-
-
-    // handle non matches of either list first
-    // if (playerItem.Name.ToLower() != itemName || roomItem.Name.ToLower() != itemName)
-    // {
-    // Messages.Add($"Could not find an item to use called {itemName}.");
-    // }
-    // else if (itemName == playerItem.Name.ToLower())
-    // {
-    //   switch (playerItem)
-    //   {
-
-    //   }
-    // }
+    //at the bottom because, no spoilers.
+    public void VictoryTrigger()
+    {
+      Messages.Add("");
+      Messages.Add("Hoisting yourself back up into the room, you make your way across the body-strewn floor to the door.  You peer into the eyes of the Dark Lord and confirm he is gone from this earth.  You exit the War Room, cross the courtyard, and slip into the tunnel opening.  An enormous blow has been landed against your foe!  Tonight you will tell your village leaders and gather forces to scatter the remaining soldiers from the keep in the morning, taking advantage of the confusion!  A glorious victory for you and your people!");
+      Messages.Add("CONGRATULATIONS!! YOU WON!");
+      _game.Playing = false;
+    }
   }
 }

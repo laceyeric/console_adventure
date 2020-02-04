@@ -6,10 +6,12 @@ namespace ConsoleAdventure.Project.Models
   {
     public IRoom CurrentRoom { get; set; }
     public IPlayer CurrentPlayer { get; set; }
+    public bool Playing { get; set; } = true;
 
     //NOTE Make yo rooms here...
     public void Setup()
     {
+
       // rooms initiated
       var village = new PublicSpace("Village", "You race back to your village to update them on your mission");
 
@@ -89,16 +91,20 @@ namespace ConsoleAdventure.Project.Models
 
       // usable changes
       barracks.Usables.Add(uniform, "The sound of you changing didn't seem to stir any sleeping guards.  The rest of the uniforms seem worthless.  The 'bed' closest to you is empty...");
-      // how to select which to use?
-      // barracks.Usables.Add(bed, "You hear footsteps approaching the door from the hallway, so you lay in the empty cot, pull the covers up to your chin, and pretend to sleep. Guard: 'It's your turn for watch... Hey, what are you doing in here!? Quick Jenkins, seize him!' You try to scramble to feet to escape the room. Jenkins rushes you with the over-zealous energy of a new recruit and instinctively swings his sword down upon you. You crumple to the floor. The last sound ringing in your ear is of your family pendant bouncing on the cold stone floor that receives your lifeblood.");
       barracks.Usables.Add(bed, "Fully uniformed, you lay in the empty cot near the door to better blend in.  Shortly after, footsteps approach the barracks door. Guard: 'Hey Get Up! it's your turn for watch, Go relieve Shigeru in the Guard Room.' You quickly climb out of the bed and head for the door, keeping your head down as you pass the other guards.");
       courtyard.Usables.Add(silverKey, "Stepping into the war room you see several maps strewn across a large central table by the cool night breeze coming through a nearby 'window'. On the maps many of the villages have been marked for purification.  You also notice on one side of the table several dishes of prepared food have been set out. Perhaps the war council will be meeting soon...A narrow stair on the eastern wall winds up to the squire quarters.");
+      //need this duplicated so that the description can be displayed from silver key after entering war room as current room
+      warRoom.Usables.Add(silverKey, "Stepping into the war room you see several maps strewn across a large central table by the cool night breeze coming through a nearby 'window'. On the maps many of the villages have been marked for purification.  You also notice on one side of the table several dishes of prepared food have been set out. Perhaps the war council will be meeting soon...A narrow stair on the eastern wall winds up to the squire quarters.");
+      warRoom.Usables.Add(vial, "As you stare around the room you realize the vial is likely the same deadly poison that the Dark Lord's troops have been putting on their arrowheads...the same arrows that have felled so many of those close to you. Inspecting the refreshment layout, you drain every last drop from the vial into the most ornate cups, then toss the empty vial out the window.");
+      warRoom.Usables.Add(window, "You grab the outer ledge of the stone opening in the wall, and hop out of the room.  As you gauge the short fall to the brush below you can hear the war council jovially speaking with each other as they enter the room.  The Dark Lord's rasp-filled cackle cutting through the rest.  As much as your adrenaline wishes you to flee you can't help but to continue to listen.  Clanging of glasses, an enthusiastic toast is bellowed. Some more talk about the need to destroy the 'inconveniences' surrounding the castle's lands.  Then, amidst a self-indulging monologue, the Dark Lord begins to cough. It thickens.  You can hear the concern in the other councilmembers as their steps scurry towards him.  You can hear as the rest of the group begins to struggle breathing as well.  Your knuckles turn white as you soak in their desperate gasps for air.  Worried they may try and run for help, you pull yourself up and peer back into the room, but they have all fallen still on the floor.");
 
       // player instantiation?
       Player Current = new Player("");
       CurrentPlayer = Current;
       CurrentPlayer.Inventory.Add(pendant);
       CurrentPlayer.Usables.Add(uniform.Name, false); //cannot be an object
+
+      Playing = true;
 
     }
     public Game()

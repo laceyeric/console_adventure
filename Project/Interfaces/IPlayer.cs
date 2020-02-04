@@ -8,5 +8,6 @@ namespace ConsoleAdventure.Project.Interfaces
     string Name { get; set; }
     List<Item> Inventory { get; set; }
     Dictionary<string, bool> Usables { get; set; }
+    bool WearingUniform { get; set; }
   }
 }
